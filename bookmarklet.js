@@ -99,17 +99,17 @@ s.src=(function(){
                     var arr2 = $(dom).find("div.a-row > a.a-link-normal");
                     console.log(arr0);
                     var price = $(arr0[1]).text().match(/[0-9]/g).join('');
-                    var date = $(arr0[0]).text().replace(/\s+/g, '');
+                    var date = $(arr0[0]).text().replace(/(^\s+|\s+$)/g, '');
                     console.log(arr1);
                     console.log(arr2);
 
                     for (var j=0; j<arr2.length; j++) {
                         var item= {};
-                        item.name = $(arr2[j]).text().replace(/\s+/g, '');
-                        item.path = $(arr2[j]).attr('href').replace(/\s+/g, '');
+                        item.name = $(arr2[j]).text().replace(/(^\s+|\s+$)/g, '');
+                        item.path = $(arr2[j]).attr('href').replace(/(^\s+|\s+$)/g, '');
                         item.url = 'https://www.amazon.co.jp' + item.path;
                         item.date = date;
-                        item.author = $(arr1[j*2]).text().replace(/\s+/g, '');
+                        item.author = $(arr1[j*2]).text().replace(/(^\s+|\s+$)/g, '');
                         ret.push(item);
                     }
 				    _total += (Number(price));
