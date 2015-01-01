@@ -31,18 +31,33 @@ s.src=(function(){
 	function init(num) {
 		if(typeof num !== 'number') {
 			num = 0;
+			$('<div/>').css({
+				position: 'fixed',
+				left: 0,
+				top: 0,
+				width: '100%',
+				height: '100%',
+				zIndex: 1000,
+				backgroundColor: 'rgba(0,0,0,.7)',
+				color: '#fff',
+				fontSize: 30,
+				textAlign: 'center',
+				paddingTop: '15em'
+			}).attr('id', '___overlay').text('Amazonいくら使った？').appendTo('body');
 			year = window.prompt('何年分の注文を集計しますか？\n半角数字4桁で入力してください\n（全期間を集計する場合は「all」と入力）', '2014');
 			if(year === 'all') {
 				all = true;
 				year = $('#orderFilter option:last').val().match(/[0-9]/g).join('');
 			} else if(!/^[0-9]{4}$/.test(year)) {
 				alert('正しい数値を入力してください');
+                $('#___overlay').remove();
 				return false;
 			}
 			year = Number(year);
 			total[year] = 0;
 		}
 		var progress = load(num);
+		$('#___overlay').text(year+'年の集計中…  / '+(num+1)+'ページ目');
 		progress.done(function(price){
 			total[year] += price;
 			init(num+1);
@@ -64,6 +79,7 @@ s.src=(function(){
 					content += formatEntry(item);
 				});
                 alert(txt + 'の買い物をAmazonでしました！');
+                $('#___overlay').remove();
 				popup(content);
 			}
 		});
@@ -123,6 +139,7 @@ s.src=(function(){
 			url: url,
 			success: function(data, status){
                 alert('ログイン状態を確認して下さい');
+                $('#___overlay').remove();
                 df.reject();
 			},
 			error: function(request, status, errorThrown){
