@@ -18,19 +18,6 @@ s.src=(function(){
         console.log('init');
 		if(typeof num !== 'number') {
 			num = 0;
-			$('div').css({
-				position: 'fixed',
-				left: 0,
-				top: 0,
-				width: '100%',
-				height: '100%',
-				zIndex: 1000,
-				backgroundColor: 'rgba(0,0,0,.7)',
-				color: '#fff',
-				fontSize: 30,
-				textAlign: 'center',
-				paddingTop: '15em'
-			}).attr('id', '___overlay').text('Amazonいくら使った？').appendTo('body');
 			year = window.prompt('何年分の注文を集計しますか？\n半角数字4桁で入力してください\n（全期間を集計する場合は「all」と入力）', '2012');
 			if(year === 'all') {
 				all = true;
@@ -61,10 +48,37 @@ s.src=(function(){
 					_total += yen;
 				});
 				if(all) txt += '総計' + addFigure(_total) + '円分\n';
-				alert(txt + 'の買い物をAmazonでしました！');
+                var content = "";
+                $.each(ret, function(i, item) {
+                    content += formatEntry(item);
+                });
+				popup(content).alert(txt + 'の買い物をAmazonでしました！');
 				$('#___overlay').remove();
 			}
 		});
+	}
+
+	var datePattern = new RegExp("(\\d{4})年(\\d{1,2})月(\\d{1,2})日");
+	function formatEntry(entry) {
+		entry.date.match(datePattern);
+		var year = RegExp.$1;
+		var month = RegExp.$2; if (month.length <= 1) month = "0" + month;
+		var day = RegExp.$3; if (day.length <= 1) day = "0" + day;
+        var date = "" + year + "/" + month + "/" + day;
+        var arr = [date, entry.name, entry.price, entry.url];
+		return arr.join(',') + "\n";
+	}
+     
+	function popup(content) {
+		var generator=window.open('','name','height=250,width=700');
+		generator.document.write('<html><head><title>Amazon to CSV</title>');
+		generator.document.write('</head><body>');
+		generator.document.write('<pre>');
+		generator.document.write(content);
+		generator.document.write('</pre>');
+		generator.document.write('</body></html>');
+		generator.document.close();
+		return generator;
 	}
  
 	function load(num) {
@@ -83,6 +97,10 @@ s.src=(function(){
                     var arr0 = $(dom).find(".a-size-base");
                     item.date = $(arr0[0]).text().replace(/\s+/g, '');
                     item.price = $(arr0[1]).text().match(/[0-9]/g).join('');
+                    var arr1 = $(dom).find("div.a-row > span.a-size-small");
+                    console.log(arr1);
+                    console.log($(arr1[0]).text().replace(/\s+/g, ''));
+                    console.log($(arr1[2]).text().replace(/\s+/g, ''));
                     var arr2 = $(dom).find("div.a-row > a.a-link-normal");
                     item.name = $(arr2[0]).text().replace(/\s+/g, '');
                     item.path = $(arr2[0]).attr('href').replace(/\s+/g, '');
@@ -95,15 +113,6 @@ s.src=(function(){
 			if(_total === 0) df.reject();
 			else df.resolve(_total);
         });
-		//page.done(function(data){
-		//	var dom = $.parseHTML(data);
-		//	var _total = 0;
-		//	$(dom).find('.price').each(function(){
-		//		_total += (Number($(this).text().match(/[0-9]/g).join('')));
-		//	});
-		//	if(_total === 0) df.reject();
-		//	else df.resolve(_total);
-		//});
 		return df.promise();
 	}
  
@@ -113,8 +122,10 @@ s.src=(function(){
         console.log(url);
 		$.ajax({
 			url: url,
-			success: function(data){
+			success: function(data, status){
                 console.log('success');
+                console.log(status);
+                console.log(data);
 				df.resolve(data);
 			},
             error: function(request, status, errorThrown){
