@@ -13,6 +13,7 @@ s.src=(function(){
 	var total = {};
 	var year = '2012';
 	var all = false;
+    var ret = [];
 	function init(num) {
         console.log('init');
 		if(typeof num !== 'number') {
@@ -70,38 +71,29 @@ s.src=(function(){
 		var df = $.Deferred();
 		var page = get(num);
         page.done(function(json){
+			var _total = 0;
             for (var i=0; i<json.length; i++) {
                 var item = json[i];
                 if (item[1] !== "order") continue;
-                //console.log(item[2]);
                 var dom = $.parseHTML(item[2]);
                 console.log(dom);
-                if (dom && dom.length > 0) {
+                if (dom && dom.length > 1) {
                     var text = dom[1].innerText;
-                    //console.log(dom[1].innerText);
-                    text = text.replace(/\s/g, '');
-                    text = text.replace(/\n\n/g, '\n');
-                    console.log(text);
-
-                    var arr = $(dom).find(".a-size-base");
-                    //console.log(arr);
-                    for (var j=0; j<arr.length; j++) {
-                        console.log(arr[j].innerText.replace(/\s+/g, ''));
-                        break;
-                    }
-                    //var arr1 = $(dom).find(".a-size-small");
-                    //console.log(arr1);
-                    //for (var j=0; j<arr1.length; j++) {
-                    //    console.log(arr1[j].innerText.replace(/\s+/g, ''));
-                    //}
+                    var item= {};
+                    var arr0 = $(dom).find(".a-size-base");
+                    item.date = $(arr0[0]).text().replace(/\s+/g, '');
+                    item.price = $(arr0[1]).text().match(/[0-9]/g).join('');
                     var arr2 = $(dom).find("div.a-row > a.a-link-normal");
-                    //console.log(arr2);
-                    for (var j=0; j<arr2.length; j++) {
-                        console.log($(arr2[j]).attr('href').replace(/\s+/g, ''));
-                        console.log(arr2[j].innerText.replace(/\s+/g, ''));
-                    }
+                    item.name = $(arr2[0]).text().replace(/\s+/g, '');
+                    item.path = $(arr2[0]).attr('href').replace(/\s+/g, '');
+                    item.url = 'https://www.amazon.co.jp' + item.path;
+                    ret.push(item);
+				    _total += (Number(item.price));
                 }
             }
+            console.log(ret);
+			if(_total === 0) df.reject();
+			else df.resolve(_total);
         });
 		//page.done(function(data){
 		//	var dom = $.parseHTML(data);
