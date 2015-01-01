@@ -50,7 +50,7 @@ s.src=(function(){
 				year = $('#orderFilter option:last').val().match(/[0-9]/g).join('');
 			} else if(!/^[0-9]{4}$/.test(year)) {
 				alert('正しい数値を入力してください');
-                $('#___overlay').remove();
+				$('#___overlay').remove();
 				return false;
 			}
 			year = Number(year);
@@ -78,8 +78,8 @@ s.src=(function(){
 				$.each(ret, function(i, item) {
 					content += formatEntry(item);
 				});
-                alert(txt + 'の買い物をAmazonでしました！');
-                $('#___overlay').remove();
+				alert(txt + 'の買い物をAmazonでしました！');
+				$('#___overlay').remove();
 				popup(content);
 			}
 		});
@@ -138,9 +138,9 @@ s.src=(function(){
 		$.ajax({
 			url: url,
 			success: function(data, status){
-                alert('ログイン状態を確認して下さい');
-                $('#___overlay').remove();
-                df.reject();
+				alert('ログイン状態を確認して下さい');
+				$('#___overlay').remove();
+				df.reject();
 			},
 			error: function(request, status, errorThrown){
 				/* 変形jsonをjsonに変換 */
