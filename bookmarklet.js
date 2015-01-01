@@ -15,7 +15,6 @@ s.src=(function(){
 	var all = false;
     var ret = [];
 	function init(num) {
-        console.log('init');
 		if(typeof num !== 'number') {
 			num = 0;
 			year = window.prompt('何年分の注文を集計しますか？\n半角数字4桁で入力してください\n（全期間を集計する場合は「all」と入力）', '2012');
@@ -90,19 +89,14 @@ s.src=(function(){
                 var item = json[i];
                 if (item[1] !== "order") continue;
                 var dom = $.parseHTML(item[2]);
-                console.log($(dom).text().replace(/\s+/g, ''));
                 // 注文単位のループ
                 if (dom && dom.length > 1) {
                     var text = dom[1].innerText;
                     var arr0 = $(dom).find(".a-size-base");
                     var arr1 = $(dom).find("div.a-row > span.a-size-small");
                     var arr2 = $(dom).find("div.a-row > a.a-link-normal");
-                    console.log(arr0);
                     var price = $(arr0[1]).text().match(/[0-9]/g).join('');
                     var date = $(arr0[0]).text().replace(/(^\s+|\s+$)/g, '');
-                    console.log(arr1);
-                    console.log(arr2);
-
                     for (var j=0; j<arr2.length; j++) {
                         var item= {};
                         item.name = $(arr2[j]).text().replace(/(^\s+|\s+$)/g, '');
@@ -115,7 +109,6 @@ s.src=(function(){
 				    _total += (Number(price));
                 }
             }
-            console.log(ret);
 			if(_total === 0) df.reject();
 			else df.resolve(_total);
         });
@@ -125,30 +118,19 @@ s.src=(function(){
 	function get(num) {
 		var df = $.Deferred();
         var url = 'https://www.amazon.co.jp/gp/css/order-history/?orderFilter=year-'+year+'&startIndex='+num*10;
-        console.log(url);
 		$.ajax({
 			url: url,
 			success: function(data, status){
-                console.log('success');
-                console.log(status);
-                console.log(data);
 				df.resolve(data);
 			},
             error: function(request, status, errorThrown){
-                console.log('error');
-                console.log(status);
-                console.log(request);
-                console.log(errorThrown);
-                //console.log(request['responseText']);
                 var responseText = request['responseText'];
                 responseText = responseText.replace(/&&&/g, ',');
                 responseText = responseText.replace(/\n\s*\n/g, '');
                 responseText = responseText.replace(/\n/g, '');
                 responseText = responseText.replace(/,$/, '');
                 var jsonText = '[' + responseText + ']';
-                //console.log(jsonText);
                 var json = $.parseJSON(jsonText);
-                //console.log(json);
 				df.resolve(json);
             }
 		});
@@ -160,16 +142,13 @@ s.src=(function(){
 		while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
 		return num;
 	}
-    console.log('jquery');
 	if(typeof $ !== 'function') {
-        console.log('load');
 		var d=document;
 		var s=d.createElement('script');
 		s.src='//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js';
 		s.onload=init;
 		d.body.appendChild(s);
 	} else {
-        console.log('already');
 		init();
 	}
 })();
