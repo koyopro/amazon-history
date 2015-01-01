@@ -63,7 +63,8 @@ s.src=(function(){
 				$.each(ret, function(i, item) {
 					content += formatEntry(item);
 				});
-				popup(content).alert(txt + 'の買い物をAmazonでしました！');
+                alert(txt + 'の買い物をAmazonでしました！');
+				popup(content);
 			}
 		});
 	}
@@ -121,7 +122,8 @@ s.src=(function(){
 		$.ajax({
 			url: url,
 			success: function(data, status){
-				df.resolve(data);
+                alert('ログイン状態を確認して下さい');
+                df.reject();
 			},
 			error: function(request, status, errorThrown){
 				/* 変形jsonをjsonに変換 */
