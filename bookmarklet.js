@@ -77,7 +77,29 @@ s.src=(function(){
                 var dom = $.parseHTML(item[2]);
                 console.log(dom);
                 if (dom && dom.length > 0) {
-                    console.log(dom[1].innerText);
+                    var text = dom[1].innerText;
+                    //console.log(dom[1].innerText);
+                    text = text.replace(/\s/g, '');
+                    text = text.replace(/\n\n/g, '\n');
+                    console.log(text);
+
+                    var arr = $(dom).find(".a-size-base");
+                    //console.log(arr);
+                    for (var j=0; j<arr.length; j++) {
+                        console.log(arr[j].innerText.replace(/\s+/g, ''));
+                        break;
+                    }
+                    //var arr1 = $(dom).find(".a-size-small");
+                    //console.log(arr1);
+                    //for (var j=0; j<arr1.length; j++) {
+                    //    console.log(arr1[j].innerText.replace(/\s+/g, ''));
+                    //}
+                    var arr2 = $(dom).find("div.a-row > a.a-link-normal");
+                    //console.log(arr2);
+                    for (var j=0; j<arr2.length; j++) {
+                        console.log($(arr2[j]).attr('href').replace(/\s+/g, ''));
+                        console.log(arr2[j].innerText.replace(/\s+/g, ''));
+                    }
                 }
             }
         });
@@ -129,7 +151,6 @@ s.src=(function(){
 		while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
 		return num;
 	}
- 
     console.log('jquery');
 	if(typeof $ !== 'function') {
         console.log('load');
