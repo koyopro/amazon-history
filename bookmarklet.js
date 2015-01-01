@@ -1,17 +1,4 @@
-/*
- * @title bookmarklet
- * @description my bookmarklet
- * @include http://*
- * @license MIT License
- * @require 
- */
-
 (function(){
-
-var d=document;
-var s=d.createElement('script');
-s.src=(function(){
-
 	var datePattern = new RegExp("(\\d{4})年(\\d{1,2})月(\\d{1,2})日");
 	/* TSVの出力形式を指定する */
 	function formatEntry(entry) {
@@ -171,7 +158,4 @@ s.src=(function(){
 	} else {
 		init();
 	}
-})();
-d.body.appendChild(s);
-
 })();
