@@ -36,14 +36,12 @@ s.src=(function(){
 				year = $('#orderFilter option:last').val().match(/[0-9]/g).join('');
 			} else if(!/^[0-9]{4}$/.test(year)) {
 				alert('正しい数値を入力してください');
-				$('#___overlay').remove();
 				return false;
 			}
 			year = Number(year);
 			total[year] = 0;
 		}
 		var progress = load(num);
-		$('#___overlay').text(year+'年の集計中…  / '+(num+1)+'ページ目');
 		progress.done(function(price){
 			total[year] += price;
 			init(num+1);
@@ -65,7 +63,6 @@ s.src=(function(){
 					content += formatEntry(item);
 				});
 				popup(content).alert(txt + 'の買い物をAmazonでしました！');
-				$('#___overlay').remove();
 			}
 		});
 	}
