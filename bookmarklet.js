@@ -6,6 +6,7 @@
  * @require 
  */
 
+(function(){
 
 var d=document;
 var s=d.createElement('script');
@@ -154,3 +155,4 @@ s.src=(function(){
 })();
 d.body.appendChild(s);
 
+})();
