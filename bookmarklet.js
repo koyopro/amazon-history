@@ -24,13 +24,13 @@ s.src=(function(){
 	}
 	 
 	var total = {};
-	var year = '2012';
+	var year = '2014';
 	var all = false;
 	var ret = [];
 	function init(num) {
 		if(typeof num !== 'number') {
 			num = 0;
-			year = window.prompt('何年分の注文を集計しますか？\n半角数字4桁で入力してください\n（全期間を集計する場合は「all」と入力）', '2012');
+			year = window.prompt('何年分の注文を集計しますか？\n半角数字4桁で入力してください\n（全期間を集計する場合は「all」と入力）', '2014');
 			if(year === 'all') {
 				all = true;
 				year = $('#orderFilter option:last').val().match(/[0-9]/g).join('');
