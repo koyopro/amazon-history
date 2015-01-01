@@ -98,11 +98,11 @@ s.src=(function(){
 					var date = $(arr0[0]).text().replace(/(^\s+|\s+$)/g, '');
 					for (var j=0; j<arr2.length; j++) {
 						var item= {};
-						item.name = $(arr2[j]).text().replace(/(^\s+|\s+$)/g, '');
+						item.name = $(arr2[j]).text().replace(/(^\s+|\s+$|\n|\s\s)/g, '');
 						item.path = $(arr2[j]).attr('href').replace(/(^\s+|\s+$)/g, '');
 						item.url = 'https://www.amazon.co.jp' + item.path;
 						item.date = date;
-						item.author = $(arr1[j*2]).text().replace(/(^\s+|\s+$)/g, '');
+						item.author = $(arr1[j*2]).text().replace(/(^\s+|\s+$|\n|\s\s)/g, '');
 						ret.push(item);
 					}
 					_total += (Number(price));
